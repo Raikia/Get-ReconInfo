@@ -192,7 +192,11 @@ function Get-ReconInfo {
     ## Get domain
     $name = (Get-WmiObject Win32_ComputerSystem).Domain
     Write-Output "GREP:${compname}:${name}:domain"
-
+	
+	## Get current logged on user
+    $name = Get-WMIObject Win32_Process | ForEach { $owner = $_.GetOwner(); '{0}\{1}' -f $owner.Domain, $owner.User } | Sort-Object | Get-Unique
+    Write-Output "GREP:${compname}:${name}:username"
+	
 }
 
 
